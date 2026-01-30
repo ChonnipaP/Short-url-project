@@ -1,0 +1,10 @@
+# Dependency folders (ห้ามเอาขึ้นเพราะมันหนักมาก)
+node_modules/
+
+# Environment variables (ห้ามเอาขึ้นเพราะเป็นรหัสผ่านฐานข้อมูล)
+.env
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
