@@ -6,22 +6,22 @@ function App() {
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
 
-  // ฟังก์ชันสร้าง Short URL
+  const API_BASE_URL = 'https://short-url-project-km0q.onrender.com';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/shorten', { originalUrl: longUrl });
+      const res = await axios.post(`${API_BASE_URL}/api/shorten`, { originalUrl: longUrl });
       setResult(res.data);
-      fetchHistory(); // โหลดประวัติใหม่
+      fetchHistory();
     } catch (err) {
       alert('เกิดข้อผิดพลาดในการสร้างลิงก์');
     }
   };
 
-  // ฟังก์ชันดึงประวัติการสร้าง
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/history');
+      const res = await axios.get(`${API_BASE_URL}/api/history`);
       setHistory(res.data);
     } catch (err) {
       console.error(err);
@@ -36,7 +36,6 @@ function App() {
     <div style={{ padding: '40px', maxWidth: '800px', margin: 'auto', fontFamily: 'sans-serif' }}>
       <h1>Short URL Generator</h1>
       
-      {/* ฟอร์มกรอกลิงก์ */}
       <form onSubmit={handleSubmit} style={{ marginBottom: '30px' }}>
         <input 
           type="url" 
@@ -51,18 +50,16 @@ function App() {
         </button>
       </form>
 
-      {/* แสดงผลลัพธ์ที่เพิ่งสร้าง */}
       {result && (
         <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', marginBottom: '30px', textAlign: 'center' }}>
           <h3>สร้างสำเร็จ!</h3>
-          <p>ลิงก์ของคุณ: <a href={`http://localhost:5000/${result.shortCode}`} target="_blank" rel="noreferrer">
-            {`http://localhost:5000/${result.shortCode}`}
+          <p>ลิงก์ของคุณ: <a href={`${API_BASE_URL}/${result.shortCode}`} target="_blank" rel="noreferrer">
+            {`${API_BASE_URL}/${result.shortCode}`}
           </a></p>
           <img src={result.qrCode} alt="QR Code" style={{ marginTop: '10px' }} />
         </div>
       )}
 
-      {/* ตารางแสดงประวัติ (โจทย์ข้อ 5) */}
       <h2>ประวัติการใช้งาน</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
@@ -77,7 +74,7 @@ function App() {
             <tr key={item._id}>
               <td style={{ padding: '10px', border: '1px solid #ddd', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.originalUrl}</td>
               <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                <a href={`http://localhost:5000/${item.shortCode}`} target="_blank" rel="noreferrer">{item.shortCode}</a>
+                <a href={`${API_BASE_URL}/${item.shortCode}`} target="_blank" rel="noreferrer">{item.shortCode}</a>
               </td>
               <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>{item.clicks}</td>
             </tr>
